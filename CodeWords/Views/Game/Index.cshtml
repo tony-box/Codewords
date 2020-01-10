@@ -1,0 +1,60 @@
+﻿
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div id="session"></div>
+<div id="gameBoard"></div>
+
+
+@section Scripts {
+	<script type="text/javascript">
+		(function () {
+			$.get("gameapi/generate?sessionId=aaaa", function (data) {				
+				let words = data.words;
+				let wordTable = '<table class="table"><tbody>';  
+				let board = $('#gameBoard');
+				let session = $('#session');
+				session.html('Code Masters, join session: ' + data.sessionId)
+				let index = 0;
+				for (let i = 0; i < 5; i++) {
+                    wordTable += '<tr>'
+					for (let j = 0; j < 5; j++) {
+						wordTable += '<td><div id="' + words[index] + '" class="card"</div>' + words[index] +  '</td>';
+						index++;
+					}
+                    wordTable += '</tr>'
+				}
+				wordTable += '</tbody></table>';
+				board.html(wordTable);
+
+				for (let i = 0; i < words.length; i++) {
+					let word = $('#' + words[i]);
+					word.click(function () {
+						$.get("gameapi/checkword?sessionId=aaaa&word=" + words[i], function (data) {
+							switch (data) {
+								case 0:
+									word.css("background-color", "blue");
+									word.css("color", "white");
+									break;
+								case 1:
+									word.css("background-color", "red");
+									word.css("color", "white");
+									break;
+								case 2:
+									word.css("background-color", "#CCCC99");
+									word.css("color", "white");
+									break;
+								case 3:
+									word.css("background-color", "black");
+									word.css("color", "white");
+									break;
+							}
+						});
+					});
+				}
+			});
+		}());
+	</script>
+}
+

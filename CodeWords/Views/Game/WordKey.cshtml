@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "WordKey";
+}
+
+<div id="key"></div>
+
+@section Scripts {
+    <script type="text/javascript">
+		(function () {
+			$.get("/gameapi/codemaster?sessionId=aaaa", function (data) {
+				let board = $('#key');				
+				board.html(JSON.stringify(data));
+				debugger;
+			});
+		}());
+    </script>
+}
