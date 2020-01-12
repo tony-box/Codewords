@@ -3,16 +3,59 @@
     ViewData["Title"] = "WordKey";
 }
 
-<div id="key"></div>
+<span id="inputContainer">
+	<input id="sessionId" type="text" /><button id="get">Get Key</button>
+</span>
+
+<div id="wordKey" class="container">
+	<div class="row">
+		<div class="col-sm">
+			Red words
+			<div id="redWordsList"></div>
+		</div>
+		<div class="col-sm">
+			Blue words
+			<div id="blueWordsList"></div>
+		</div>
+		<div class="col-sm">
+			Black word
+			<div id="blackWordList"></div>
+		</div>
+	</div>
+</div>
 
 @section Scripts {
     <script type="text/javascript">
 		(function () {
-			$.get("/gameapi/codemaster?sessionId=aaaa", function (data) {
-				let board = $('#key');				
-				board.html(JSON.stringify(data));
-				debugger;
-			});
+			$('#wordKey').hide();
+			$('#get').click(function () {
+				let sessionId = $('#sessionId').val();
+				$.get("/gameapi/codemaster?sessionId=" + sessionId, function (data) {
+					let redWordsList = $('#redWordsList');
+					let blueWordsList = $('#blueWordsList');
+					let blackWordList = $('#blackWordList');
+					
+					redWordsList.html(createHtmlList(data['redWords']));
+					blueWordsList.html(createHtmlList(data['blueWords']));
+					blackWordList.html(createHtmlList(data['blackWord']));
+				});
+				$('#inputContainer').hide();
+				$('#wordKey').show();
+			})
 		}());
+
+		function createHtmlList(collection) {
+			let html = '<ul class="list-group">';
+			if (Array.isArray(collection)) {
+				for (let i = 0; i < collection.length; i++) {
+					html += '<li class="list-group-item">' + collection[i] + '</li>';
+				}
+			} else {
+				html += '<li class="list-group-item">' + collection + '</li>';
+			}
+			html += '<ul>';
+
+			return html;
+		}
     </script>
 }
