@@ -10,7 +10,11 @@
 @section Scripts {
 	<script type="text/javascript">
 		(function () {
-			$.get("gameapi/generate?sessionId=aaaa", function (data) {				
+			$.get("gameapi/generate?sessionId=aaaa", function (data) {
+				if (data === null) {
+					return;
+				}
+
 				let words = data.words;
 				let wordTable = '<table class="table"><tbody>';  
 				let board = $('#gameBoard');
