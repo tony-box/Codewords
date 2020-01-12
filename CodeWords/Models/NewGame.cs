@@ -9,5 +9,7 @@ namespace CodeWords.Models
     {
         public String SessionId { get; set; }
         public IEnumerable<String> Words { get; set; }
+        public Byte RedWordCount { get; set; }
+        public Byte BlueWordCount { get; set; }
     }
 }

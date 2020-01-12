@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CodeWords.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,19 +15,28 @@ namespace CodeWords.Controllers.ApiControllers
         private Byte _WordsToGuess = 8;
         private Random _Random = new Random();
 
-        public String CreateNewGame()
+        public String CreateNewGame(Int32 size)
         {
-            return "aaaa";
+            StringBuilder builder = new StringBuilder();
+            Char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * _Random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+
+            return builder.ToString();            
         }
 
         [Route("generate"), HttpGet]
         public NewGame GenerateGameBoard(String sessionId)
         {
-            if (_ActiveGames.ContainsKey(sessionId))
+            if (sessionId != null && _ActiveGames.ContainsKey(sessionId))
             {
                 return null;
             }
 
+            var newSessionId = CreateNewGame(4);
             var blueGoesFirst = _Random.Next(0, 2) == 0 ? true : false;
             var blueWords = _WordsToGuess;
             var redWords = _WordsToGuess;
@@ -59,13 +69,15 @@ namespace CodeWords.Controllers.ApiControllers
                 assignedWords.Add(words[index], CardColor.Neutral);
             }
 
-            _ActiveGames.Add(sessionId, assignedWords);
+            _ActiveGames.Add(newSessionId, assignedWords);
             
             words.Shuffle();
             return new NewGame()
             {
-                SessionId = CreateNewGame(),
-                Words = words
+                SessionId = newSessionId,
+                Words = words,
+                RedWordCount = redWords,
+                BlueWordCount = blueWords
             };
         }
 

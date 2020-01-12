@@ -10,7 +10,8 @@
 @section Scripts {
 	<script type="text/javascript">
 		(function () {
-			$.get("gameapi/generate?sessionId=aaaa", function (data) {
+			let session = $('#session');
+			$.get("gameapi/generate?sessionId=" + session.html(), function (data) {
 				if (data === null) {
 					return;
 				}
@@ -18,7 +19,6 @@
 				let words = data.words;
 				let wordTable = '<table class="table"><tbody>';  
 				let board = $('#gameBoard');
-				let session = $('#session');
 				session.html('Code Masters, join session: ' + data.sessionId)
 				let index = 0;
 				for (let i = 0; i < 5; i++) {
