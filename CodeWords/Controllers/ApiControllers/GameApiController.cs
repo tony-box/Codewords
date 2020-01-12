@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CodeWords.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft;
 
 namespace CodeWords.Controllers.ApiControllers
 {
@@ -13,7 +10,7 @@ namespace CodeWords.Controllers.ApiControllers
     [ApiController]
     public class GameApiController : ControllerBase
     {
-        private static Dictionary<String, Dictionary<String, CardColor>> _ActiveGames = new Dictionary<string, Dictionary<string, CardColor>>();
+        private static Dictionary<String, Dictionary<String, CardColor>> _ActiveGames = new Dictionary<String, Dictionary<String, CardColor>>();
         private Byte _WordsToGuess = 8;
         private Random _Random = new Random();
 
@@ -25,7 +22,7 @@ namespace CodeWords.Controllers.ApiControllers
         [Route("generate"), HttpGet]
         public NewGame GenerateGameBoard(String sessionId)
         {
-            if (_ActiveGames.TryGetValue(sessionId, out var existingGame))
+            if (_ActiveGames.ContainsKey(sessionId))
             {
                 return null;
             }
@@ -42,7 +39,7 @@ namespace CodeWords.Controllers.ApiControllers
                 redWords += 1;
             }
 
-            var assignedWords = new Dictionary<string, CardColor>();
+            var assignedWords = new Dictionary<String, CardColor>();
             var words = RetriveWords();
             var index = 0;
             for (var i = 0; i < blueWords; i++, index++)
@@ -98,7 +95,7 @@ namespace CodeWords.Controllers.ApiControllers
         {
             var wordArray = new String[25];
             var wordCount = Words.WordCount();
-            var usedWords = new HashSet<int>();
+            var usedWords = new HashSet<Int32>();
             var wordIndex = 0;
             for (var i = 0; i < wordArray.Length; i++)
             {
@@ -122,11 +119,11 @@ namespace CodeWords.Controllers.ApiControllers
         private static Random _Random = new Random();
         public static void Shuffle(this String[] list)
         {
-            int n = list.Length;
+            Int32 n = list.Length;
             while (n > 1)
             {
                 n--;
-                int k = _Random.Next(n + 1);
+                Int32 k = _Random.Next(n + 1);
                 var value = list[k];
                 list[k] = list[n];
                 list[n] = value;
