@@ -35,7 +35,7 @@
 				for (let i = 0; i < words.length; i++) {
 					let word = $('#' + words[i]);
 					word.click(function () {
-						$.get("gameapi/checkword?sessionId=aaaa&word=" + words[i], function (data) {
+						$.get('gameapi/checkword?sessionId=' + data.sessionId + '&word=' + words[i], function (data) {
 							switch (data) {
 								case 0:
 									word.css("background-color", "blue");
