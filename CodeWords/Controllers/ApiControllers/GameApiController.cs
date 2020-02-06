@@ -11,7 +11,7 @@ namespace CodeWords.Controllers.ApiControllers
     [ApiController]
     public class GameApiController : ControllerBase
     {
-        private static Dictionary<String, Dictionary<String, CardColor>> _ActiveGames = new Dictionary<String, Dictionary<String, CardColor>>();
+        private static Dictionary<String, GameState> _ActiveGames = new Dictionary<String, GameState>();
         private Byte _WordsToGuess = 8;
         private Random _Random = new Random();
 
@@ -69,7 +69,14 @@ namespace CodeWords.Controllers.ApiControllers
                 assignedWords.Add(words[index], CardColor.Neutral);
             }
 
-            _ActiveGames.Add(newSessionId, assignedWords);
+            var newGame = new GameState
+            {
+                Words = assignedWords,
+                BlueWordsLeft = blueWords,
+                RedWordsLeft = redWords
+            };
+
+            _ActiveGames.Add(newSessionId, newGame);
             
             words.Shuffle();
             return new NewGame()
@@ -84,7 +91,7 @@ namespace CodeWords.Controllers.ApiControllers
         [Route("checkword"), HttpGet]
         public CardColor CheckWordColor(String sessionId, String word)
         {
-            return _ActiveGames[sessionId][word];
+            return _ActiveGames[sessionId].Words[word];
         }
 
 
@@ -93,11 +100,12 @@ namespace CodeWords.Controllers.ApiControllers
         {
             if(_ActiveGames.TryGetValue(sessionId, out var wordKey))
             {
+                var words = wordKey.Words;
                 return new WordKey
                 {
-                    BlueWords = wordKey.Where(x => x.Value == CardColor.Blue).Select(x => x.Key),
-                    RedWords = wordKey.Where(x => x.Value == CardColor.Red).Select(x => x.Key),
-                    BlackWord = wordKey.Where(x => x.Value == CardColor.Black).Select(x => x.Key).Single()
+                    BlueWords = words.Where(x => x.Value == CardColor.Blue).Select(x => x.Key),
+                    RedWords = words.Where(x => x.Value == CardColor.Red).Select(x => x.Key),
+                    BlackWord = words.Where(x => x.Value == CardColor.Black).Select(x => x.Key).Single()
                 };
             }
             return null;
