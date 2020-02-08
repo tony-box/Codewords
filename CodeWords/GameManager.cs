@@ -15,7 +15,7 @@ namespace CodeWords
 
         public static NewGame CreateNewGame()
         {
-            var newSessionId = GameManager.GenerateSessionId();
+            var newSessionId = GenerateSessionId();
             var blueGoesFirst = _Random.Next(0, 2) == 0 ? true : false;
 
             var assignedWords = new Dictionary<String, CardColor>();
@@ -100,6 +100,22 @@ namespace CodeWords
             return cardColor;
         }
 
+        public static WordKey CreateWordKey(String sessionId)
+        {
+            if (!_ActiveGames.TryGetValue(sessionId.ToUpper(), out var wordKey))
+            {
+                return null;
+            }
+            
+            var words = wordKey.Words;
+            return new WordKey
+            {
+                BlueWords = words.Where(x => x.Value == CardColor.Blue).Select(x => x.Key),
+                RedWords = words.Where(x => x.Value == CardColor.Red).Select(x => x.Key),
+                BlackWord = words.Where(x => x.Value == CardColor.Black).Select(x => x.Key).Single()
+            };
+        }
+
         private static String GenerateSessionId()
         {
             var builder = new StringBuilder();
@@ -136,11 +152,11 @@ namespace CodeWords
 
         private static void Shuffle(String[] list)
         {
-            Int32 n = list.Length;
+            var n = list.Length;
             while (n > 1)
             {
                 n--;
-                Int32 k = _Random.Next(n + 1);
+                var k = _Random.Next(n + 1);
                 var value = list[k];
                 list[k] = list[n];
                 list[n] = value;

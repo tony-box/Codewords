@@ -11,8 +11,6 @@ namespace CodeWords.Controllers.ApiControllers
     [ApiController]
     public class GameApiController : ControllerBase
     {
-        private static Dictionary<String, GameState> _ActiveGames = new Dictionary<String, GameState>();
-
         [Route("generate"), HttpGet]
         public NewGame GenerateGameBoard()
         {
@@ -34,17 +32,7 @@ namespace CodeWords.Controllers.ApiControllers
         [Route("codemaster"), HttpGet]
         public WordKey GetCodeMasterKey(String sessionId)
         {
-            if(_ActiveGames.TryGetValue(sessionId.ToUpper(), out var wordKey))
-            {
-                var words = wordKey.Words;
-                return new WordKey
-                {
-                    BlueWords = words.Where(x => x.Value == CardColor.Blue).Select(x => x.Key),
-                    RedWords = words.Where(x => x.Value == CardColor.Red).Select(x => x.Key),
-                    BlackWord = words.Where(x => x.Value == CardColor.Black).Select(x => x.Key).Single()
-                };
-            }
-            return null;
+            return GameManager.CreateWordKey(sessionId);
         }
     }
 }
