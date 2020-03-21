@@ -41,6 +41,7 @@ namespace CodeWords.Controllers.ApiControllers
                 {
                     BlueWords = words.Where(x => x.Value == CardColor.Blue).Select(x => x.Key),
                     RedWords = words.Where(x => x.Value == CardColor.Red).Select(x => x.Key),
+                    NeutralWords = words.Where(x => x.Value == CardColor.Neutral).Select(x => x.Key),
                     BlackWord = words.Where(x => x.Value == CardColor.Black).Select(x => x.Key).Single()
                 };
             }
