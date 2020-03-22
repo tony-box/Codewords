@@ -19,7 +19,7 @@
 		</div>
 		<div class="col-sm">
 			Neutral words
-			<div id="neutralWordList"></div>
+			<div id="neutralWordsList"></div>
 		</div>
 		<div class="col-sm">
 			Black word
@@ -37,7 +37,7 @@
 				$.get("/gameapi/codemaster?sessionId=" + sessionId, function (data) {
 					let redWordsList = $('#redWordsList');
 					let blueWordsList = $('#blueWordsList');
-					let neutralWordList = $('#neutralWordList');
+					let neutralWordsList = $('#neutralWordList');
 					let blackWordList = $('#blackWordList');
 					
 					redWordsList.html(createHtmlList(data['redWords']));

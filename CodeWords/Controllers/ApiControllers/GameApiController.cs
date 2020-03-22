@@ -34,7 +34,7 @@ namespace CodeWords.Controllers.ApiControllers
         [Route("codemaster"), HttpGet]
         public WordKey GetCodeMasterKey(String sessionId)
         {
-            if(_ActiveGames.TryGetValue(sessionId.ToUpper(), out var wordKey))
+            if(_ActiveGames.TryGetValue(sessionId, out var wordKey))
             {
                 var words = wordKey.Words;
                 return new WordKey
@@ -44,6 +44,11 @@ namespace CodeWords.Controllers.ApiControllers
                     NeutralWords = words.Where(x => x.Value == CardColor.Neutral).Select(x => x.Key),
                     BlackWord = words.Where(x => x.Value == CardColor.Black).Select(x => x.Key).Single()
                 };
+            } 
+            else
+            {
+                throw new Exception("Game SessionID does not exist");
+                /*TODO: Add output to the user saying the user session doesn't exist*/
             }
             return null;
         }
