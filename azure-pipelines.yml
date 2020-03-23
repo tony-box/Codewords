@@ -14,7 +14,7 @@ steps:
     displayName: "Building app"
     inputs:
       command: 'build'
-      projects: '$(Build.SourcesDirectory)\CodeWords\CodeWords.sln'
+      projects: '$(Build.SourcesDirectory)\CodeWords.sln'
 
   - task: DotNetCoreCLI@2
     displayName: "Publishing app"
@@ -30,5 +30,5 @@ steps:
       azureSubscription: 'Microsoft Azure Internal Consumption(869a32c0-5f80-47bd-817e-f054d16ef5d9)'
       appType: 'webAppLinux'
       WebAppName: 'samcodewords'
-      packageForLinux: '$(Build.SourcesDirectory)\Codewords\CodeWords\bin\Debug\netcoreapp3.1\publish.zip'
+      packageForLinux: '$(Build.SourcesDirectory)\CodeWords\bin\Debug\netcoreapp3.1\publish.zip'
       RuntimeStack: 'DOTNETCORE|3.0'
