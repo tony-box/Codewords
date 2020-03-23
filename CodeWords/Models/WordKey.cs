@@ -8,5 +8,6 @@ namespace CodeWords.Models
         public IEnumerable<String> BlueWords { get; set; }
         public IEnumerable<String> RedWords { get; set; }
         public String BlackWord { get; set; }
+        public IEnumerable<String> NeutralWords { get; set; }
     }
 }
