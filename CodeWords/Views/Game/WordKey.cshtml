@@ -34,17 +34,21 @@
 			$('#wordKey').hide();
 			$('#get').click(function () {
 				let sessionId = $('#sessionId').val();
-				$.get("/gameapi/codemaster?sessionId=" + sessionId, function (data) {
-					let redWordsList = $('#redWordsList');
-					let blueWordsList = $('#blueWordsList');
-					let neutralWordsList = $('#neutralWordList');
-					let blackWordList = $('#blackWordList');
-					
-					redWordsList.html(createHtmlList(data['redWords']));
-					blueWordsList.html(createHtmlList(data['blueWords']));
-					neutralWordsList.html(createHtmlList(data['neutralWords']));
-					blackWordList.html(createHtmlList(data['blackWord']));
-				});
+				$.get("/gameapi/codemaster?sessionId=" + sessionId)
+					.done(function (data) {
+						let redWordsList = $('#redWordsList');
+						let blueWordsList = $('#blueWordsList');
+						let neutralWordsList = $('#neutralWordsList');
+						let blackWordList = $('#blackWordList');
+						
+						redWordsList.html(createHtmlList(data['redWords']));
+						blueWordsList.html(createHtmlList(data['blueWords']));
+						neutralWordsList.html(createHtmlList(data['neutralWords']));
+						blackWordList.html(createHtmlList(data['blackWord']));
+					})
+					.fail(function(jqXHR, textStatus, errorThrown) {
+						window.alert("Game Session does not exist");
+					 });
 				$('#inputContainer').hide();
 				$('#wordKey').show();
 			})

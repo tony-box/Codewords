@@ -104,7 +104,7 @@ namespace CodeWords
         {
             if (!_ActiveGames.TryGetValue(sessionId.ToUpper(), out var wordKey))
             {
-                return null;
+                throw new Exception("Invalid SessionID");
             }
 
             var words = wordKey.Words;
