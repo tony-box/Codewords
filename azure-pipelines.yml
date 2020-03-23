@@ -3,17 +3,32 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
+trigger: none
 
 pool:
   vmImage: 'vs2017-win2016'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - task: DotNetCoreCLI@2
+    displayName: "Building app"
+    inputs:
+      command: 'build'
+      projects: '$(Build.SourcesDirectory)\CodeWords\CodeWords.sln'
+
+  - task: DotNetCoreCLI@2
+    displayName: "Publishing app"
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
+      workingDirectory: '$(Build.SourcesDirectory)'
+
+  - task: AzureRmWebAppDeployment@4
+    displayName: "Deploying to Azure"
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Microsoft Azure Internal Consumption(869a32c0-5f80-47bd-817e-f054d16ef5d9)'
+      appType: 'webAppLinux'
+      WebAppName: 'samcodewords'
+      packageForLinux: '$(Build.SourcesDirectory)\Codewords\CodeWords\bin\Debug\netcoreapp3.1\publish.zip'
+      RuntimeStack: 'DOTNETCORE|3.0'
