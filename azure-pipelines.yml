@@ -31,4 +31,4 @@ steps:
       appType: 'webAppLinux'
       WebAppName: 'samcodewords'
       packageForLinux: '$(Build.SourcesDirectory)\CodeWords\bin\Debug\netcoreapp3.1\publish.zip'
-      RuntimeStack: 'DOTNETCORE|3.0'
+      RuntimeStack: 'DOTNETCORE|3.1'
