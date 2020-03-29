@@ -24,7 +24,8 @@
 				for (let i = 0; i < 5; i++) {
                     wordTable += '<tr>'
 					for (let j = 0; j < 5; j++) {
-						wordTable += '<td><div id="' + words[index] + '" class="card"</div>' + words[index] +  '</td>';
+						let sanitizedword = words[index].replace(' ',"_");
+						wordTable += '<td><div id="' + sanitizedword + '" class="card"</div>' + words[index] +  '</td>';
 						index++;
 					}
                     wordTable += '</tr>'
@@ -33,7 +34,8 @@
 				board.html(wordTable);
 
 				for (let i = 0; i < words.length; i++) {
-					let word = $('#' + words[i]);
+					let sanitizedword = words[i].replace(' ',"_");
+					let word = $('#' + sanitizedword);
 					word.click(function () {
 						$.get('gameapi/checkword?sessionId=' + data.sessionId + '&word=' + words[i], function (data) {
 							switch (data) {
