@@ -10,6 +10,7 @@ namespace CodeWords.Models
         public Dictionary<String, CardColor> Words { get; set; }
         public Byte BlueWordsLeft { get; set; }
         public Byte RedWordsLeft { get; set; }
+        public Boolean GameOver { get; set; }
         public DateTime CreatedDateTime { get; set; }
     }
 }

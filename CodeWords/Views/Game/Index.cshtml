@@ -38,7 +38,7 @@
 					let word = $('#' + sanitizedWord);
 					word.click(function () {
 						$.get('gameapi/checkword?sessionId=' + data.sessionId + '&word=' + words[i], function (data) {
-							switch (data) {
+							switch (data.cardColor) {
 								case 0:
 									word.css("background-color", "blue");
 									word.css("color", "white");
@@ -55,6 +55,10 @@
 									word.css("background-color", "black");
 									word.css("color", "white");
 									break;
+							}
+							
+							if (data.gameOver) {
+								alert(data.victoryMessage);
 							}
 						});
 					});

@@ -18,11 +18,11 @@ namespace CodeWords.Controllers.ApiControllers
         }
 
         [Route("checkword"), HttpGet]
-        public CardColor CheckWordColor(String sessionId, String word)
+        public CardSelection CheckWordColor(String sessionId, String word)
         {
             if (sessionId != null && word != null)
             {
-                return GameManager.GetCardColor(sessionId, word);
+                return GameManager.ProcessCardSelection(sessionId, word);
             }
 
             throw new Exception("Invalid Session or Word");
