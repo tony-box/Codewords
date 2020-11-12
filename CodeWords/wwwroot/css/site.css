@@ -66,6 +66,7 @@ html {
     font-weight: bold;
     -webkit-box-shadow: 5px 5px 15px 0px #000000;
     box-shadow: 5px 5px 15px 0px #000000;
+    background-color: #cca462;
 }
 
 .menuImage {
@@ -101,4 +102,16 @@ html {
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.sessionMessage {
+    position: absolute;
+    top: 90%;
+    left: 85%;
+    font-size: xx-large;
+    color: red;
+    border: 4px solid red;
+    border-radius: 5px;
+    font-family: Courier;
+    padding: 5px;
 }

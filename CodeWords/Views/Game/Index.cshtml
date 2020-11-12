@@ -3,7 +3,7 @@
 	ViewData["Title"] = "Index";
 }
 
-<div id="session"></div>
+<div id="session" class="sessionMessage">CLASSIFIED</div>
 <div class="centerScreen" id="gameBoard"></div>
 
 
@@ -19,7 +19,18 @@
 				let words = data.words;
 				let wordTable = '<table class="table"><tbody>';  
 				let board = $('#gameBoard');
-				session.html('Code Masters, join session: ' + data.sessionId)
+				session.data('textToggle', data.sessionId)
+					.hover(function (e) {
+					var that = $(this);
+					var textToSet = that.data('textToggle');
+					that.data('textToggle', that.text());
+					that.text(textToSet);
+				}, function (e) {
+					var that = $(this);
+					var textToSet = that.data('textToggle');
+					that.data('textToggle', that.text());
+					that.text(textToSet);
+				});
 				let index = 0;
 				for (let i = 0; i < 5; i++) {
                     wordTable += '<tr>'
@@ -40,16 +51,19 @@
 						$.get('gameapi/checkword?sessionId=' + data.sessionId + '&word=' + words[i], function (data) {
 							switch (data.cardColor) {
 								case 0:
-									word.css("background-color", "blue");
-									word.css("color", "white");
+									// blue
+									word.css("background-color", "#3d68d4");
+									word.empty();
 									break;
 								case 1:
-									word.css("background-color", "red");
-									word.css("color", "white");
+									// red
+									word.css("background-color", "#d43d3d");
+									word.empty();
 									break;
 								case 2:
+									// neutral
 									word.css("background-color", "#CCCC99");
-									word.css("color", "white");
+									word.empty();
 									break;
 								case 3:
 									word.css("background-color", "black");
