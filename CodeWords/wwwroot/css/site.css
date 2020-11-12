@@ -64,6 +64,8 @@ html {
     font-family: Courier;
     font-size: xx-large;
     font-weight: bold;
+    -webkit-box-shadow: 5px 5px 15px 0px #000000;
+    box-shadow: 5px 5px 15px 0px #000000;
 }
 
 .menuImage {
@@ -74,7 +76,7 @@ html {
     background-size: cover;
 }
 
-.menu {    
+.centerScreen {
     text-align: center;
     margin: 0;
     position: absolute;
