@@ -60,7 +60,7 @@ namespace CodeWords
             _ActiveGames.Add(newSessionId, newGame);
             Shuffle(words);
 
-            return new NewGame()
+            return new NewGame
             {
                 SessionId = newSessionId,
                 Words = words,
@@ -69,35 +69,63 @@ namespace CodeWords
             };
         }
 
-        public static CardColor GetCardColor(String sessionId, String word)
+        public static CardSelection ProcessCardSelection(String sessionId, String word)
         {
-            var game = _ActiveGames[sessionId];
+            if (!_ActiveGames.TryGetValue(sessionId, out var game))
+            {
+                throw new Exception("Could not find game session");
+            }
+            
             var cardColor = game.Words[word];
+            var cardSelection = new CardSelection
+            {
+                CardColor = cardColor
+            };
+            if (game.GameOver)
+            {
+                return cardSelection;
+            }
+            
             switch (cardColor)
             {
                 case CardColor.Blue:
-                    {
-                        game.BlueWordsLeft--;
-                        break;
-                    }
+                {
+                    game.BlueWordsLeft--;
+                    break;
+                }
                 case CardColor.Red:
-                    {
-                        game.RedWordsLeft--;
-                        break;
-                    }
+                {
+                    game.RedWordsLeft--;
+                    break;
+                }
                 case CardColor.Black:
-                    {
-                        _ActiveGames.Remove(sessionId);
-                        break;
-                    }
+                {
+                    game.GameOver = true;
+                    cardSelection.GameOver = true;
+                    cardSelection.VictoryMessage = "You picked the black word better luck next time!";
+                    break;
+                }
             }
 
-            if (game.BlueWordsLeft == 0 || game.RedWordsLeft == 0)
+            if (game.BlueWordsLeft == 0)
             {
-                _ActiveGames.Remove(sessionId);
+                game.GameOver = true;
+                cardSelection.GameOver = true;
+                cardSelection.VictoryMessage = "Blue team wins!";
+                
+                return cardSelection;
+            }
+            
+            if (game.RedWordsLeft == 0)
+            {
+                game.GameOver = true;
+                cardSelection.GameOver = true;
+                cardSelection.VictoryMessage = "Red team wins!";
+                
+                return cardSelection;
             }
 
-            return cardColor;
+            return cardSelection;
         }
 
         public static WordKey CreateWordKey(String sessionId)
